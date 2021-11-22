@@ -4,6 +4,13 @@ version: 2.1
 
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
+commands: 
+  destroy_env:
+    steps:
+     - run:
+         name: Destroy Env
+         when: on_fail
+         command: aws cloudformation delete-stack  --stack-name mystack-${CIRCLE_WORKFLOW_ID}
 jobs:
   create-infra:
     docker:
@@ -30,8 +37,6 @@ jobs:
           command: ansible-playbook main-remote.yml -i inventory    
  
   run-smoke-test: 
-    # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
-    # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
     docker:
       - image: alpine:latest  
     steps:
@@ -47,10 +52,22 @@ jobs:
              return 1
            fi  
 
+  run-smoke-test-V1: 
+    docker:
+      - image: alpine:latest  
+    steps:
+      - run:
+          name: "Test job"
+          command:  return 1
+      - destroy_env    
+
 
 
 
 workflows:
   circle-ansible-workflow:
     jobs:
-      - run-smoke-test
+      - create-infra
+      - run-smoke-test-V1:
+            requires:
+             - create-infra
