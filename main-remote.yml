@@ -1,0 +1,8 @@
+#set up web server in ec2
+- name: Setup node server in Ec2
+  hosts: all
+  user: ubuntu
+  become_method: sudo
+  become_user: root
+  roles:
+    - setup
