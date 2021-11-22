@@ -1,0 +1,22 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Raghu udacity - This template deploys a EC2 ubuntu machine
+Resources:
+  
+  Udacitysecuritygroup:
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties:
+      GroupDescription: securty group for ec2 machine
+      SecurityGroupIngress:
+      - IpProtocol: tcp
+        FromPort: 22
+        ToPort: 22
+        CidrIp: 0.0.0.0/0
+  Udacityinstance:
+    Type: 'AWS::EC2::Instance'
+    Properties:
+      ImageId: ami-083654bd07b5da81d
+      InstanceType: t3.micro
+      KeyName: udacity-fresh-working-key
+      SecurtyGroups:
+        !Ref Udacitysecuritygroup
+      
