@@ -6,6 +6,7 @@ Resources:
     Type: 'AWS::EC2::SecurityGroup'
     Properties:
       GroupDescription: securty group for ec2 machine
+      VpcId: vpc-0f40a989fdbd161cc
       SecurityGroupIngress:
       - IpProtocol: tcp
         FromPort: 22
