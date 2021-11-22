@@ -17,6 +17,9 @@ Resources:
       ImageId: ami-083654bd07b5da81d
       InstanceType: t3.micro
       KeyName: udacity-fresh-working-key
-      SecurityGroups:
-        !Ref Udacitysecuritygroup
+      NetworkInterfaces:
+       - AssociatePublicIpAddress: "true"
+         DeviceIndex: "0"
+         GroupSet:
+          - !Ref Udacitysecuritygroup
       
